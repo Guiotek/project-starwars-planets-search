@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import fetchStarWars from '../data/fetchStarWars';
+import fetchStarWars from '../services/fetchStarWars';
+import filterSelect from '../services/filterSelect';
 
 export const Context = createContext({});
 
@@ -9,10 +10,16 @@ function MyContext({ children }) {
     Api: {},
     isLoading: true,
   });
-
   const [filter, setIsFilter] = useState({
     isfilter: false,
     filterValue: '',
+  });
+
+  const [filterNumberActive, setFilterNumberActive] = useState({
+    optionOne: '',
+    optionTwo: '',
+    number: 0,
+    filterOn: false,
   });
 
   const filterValuechange = useCallback((param) => {
@@ -25,6 +32,8 @@ function MyContext({ children }) {
 
   const { filterValue } = filter;
 
+  const { optionOne, optionTwo, number } = filterNumberActive;
+
   useEffect(() => {
     const fetchData = async () => {
       const ApiRequest = await fetchStarWars();
@@ -32,15 +41,32 @@ function MyContext({ children }) {
         delete e.residents;
         return e;
       });
-      console.log(filter.isfilter);
+      console.log(results);
       if (filter.isfilter) {
         const a = results.filter((e) => e.name.includes(filterValue));
         console.log('Filter Value:', a);
         setApi((stateOld) => ({
-          stateOld,
+          ...stateOld,
           Api: a,
           isLoading: false,
         }));
+      }
+      if (filterNumberActive.filterOn) {
+        const filtered = filterSelect(results, optionOne, optionTwo, number);
+        console.log(filtered);
+        if (filtered !== undefined) {
+          setApi((stateOld) => ({
+            ...stateOld,
+            Api: filtered,
+            isLoading: false,
+          }));
+        } else {
+          setApi((stateOld) => ({
+            ...stateOld,
+            Api: results,
+            isLoading: false,
+          }));
+        }
       } else {
         setApi((stateOld) => ({
           stateOld,
@@ -50,7 +76,7 @@ function MyContext({ children }) {
       }
     };
     fetchData();
-  }, [filterValue, filter.isfilter]);
+  }, [filterValue, filter.isfilter, filterNumberActive, optionOne, optionTwo, number]);
 
   // const initialValue = useCallback(
   //   () => ({
@@ -60,7 +86,11 @@ function MyContext({ children }) {
   //   [API, filterValuechange],
   // );
   const initialValue = useMemo(() => ({
-    API, filterValuechange }), [API, filterValuechange]);
+    API,
+    filterValuechange,
+    filterNumberActive,
+    setFilterNumberActive,
+  }), [API, filterValuechange, setFilterNumberActive, filterNumberActive]);
 
   return (
     <Context.Provider value={ initialValue }>
