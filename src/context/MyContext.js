@@ -15,12 +15,11 @@ function MyContext({ children }) {
     filterValue: '',
   });
 
-  const [filterNumberActive, setFilterNumberActive] = useState({
-    optionOne: '',
-    optionTwo: '',
-    number: 0,
-    filterOn: false,
-  });
+  const [filterNumberActive, setFilterNumberActive] = useState([]);
+
+  const [filterActivate, setFilterActivate] = useState(false);
+
+  console.log(filterNumberActive);
 
   const filterValuechange = useCallback((param) => {
     setIsFilter((stateOld) => ({
@@ -41,20 +40,21 @@ function MyContext({ children }) {
         delete e.residents;
         return e;
       });
-      console.log(results);
       if (filter.isfilter) {
         const a = results.filter((e) => e.name.includes(filterValue));
-        console.log('Filter Value:', a);
         setApi((stateOld) => ({
           ...stateOld,
           Api: a,
           isLoading: false,
         }));
       }
-      if (filterNumberActive.filterOn) {
-        const filtered = filterSelect(results, optionOne, optionTwo, number);
-        console.log(filtered);
-        if (filtered !== undefined) {
+      if (filterActivate) {
+        let filtered = results;
+        filterNumberActive.forEach((e) => {
+          filtered = filterSelect(filtered, e.optionOne, e.optionTwo, e.number);
+          console.log(filtered);
+        });
+        if (filtered.length) {
           setApi((stateOld) => ({
             ...stateOld,
             Api: filtered,
@@ -76,20 +76,21 @@ function MyContext({ children }) {
       }
     };
     fetchData();
-  }, [filterValue, filter.isfilter, filterNumberActive, optionOne, optionTwo, number]);
+  }, [
+    filterValue,
+    filter.isfilter,
+    filterNumberActive, optionOne,
+    optionTwo,
+    number,
+    filterActivate,
+  ]);
 
-  // const initialValue = useCallback(
-  //   () => ({
-  //     API,
-  //     filterValuechange,
-  //   }),
-  //   [API, filterValuechange],
-  // );
   const initialValue = useMemo(() => ({
     API,
     filterValuechange,
     filterNumberActive,
     setFilterNumberActive,
+    setFilterActivate,
   }), [API, filterValuechange, setFilterNumberActive, filterNumberActive]);
 
   return (

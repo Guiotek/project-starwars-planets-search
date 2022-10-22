@@ -11,7 +11,11 @@ function Filter() {
     number: 0,
   });
 
-  const { filterValuechange, setFilterNumberActive } = useContext(Context);
+  const {
+    filterValuechange,
+    setFilterNumberActive,
+    setFilterActivate,
+  } = useContext(Context);
   const { inputValue } = valueNow;
 
   const searchOnChange = ({ target }) => {
@@ -33,13 +37,15 @@ function Filter() {
   };
 
   const onClickFilter = () => {
-    setFilterNumberActive((state) => ({
+    setFilterNumberActive((state) => ([
       ...state,
-      optionOne: filterNumber.optionOne,
-      optionTwo: filterNumber.optionTwo,
-      number: Number(filterNumber.number),
-      filterOn: true,
-    }));
+      {
+        optionOne: filterNumber.optionOne,
+        optionTwo: filterNumber.optionTwo,
+        number: Number(filterNumber.number),
+      },
+    ]));
+    setFilterActivate(true);
   };
 
   return (
