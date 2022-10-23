@@ -17,16 +17,21 @@ function MyContext({ children }) {
 
   const [filterNumberActive, setFilterNumberActive] = useState([]);
 
-  const [filterActivate, setFilterActivate] = useState(false);
-
   console.log(filterNumberActive);
 
+  const [filterActivate, setFilterActivate] = useState(false);
+
   const filterValuechange = useCallback((param) => {
-    setIsFilter((stateOld) => ({
-      ...stateOld,
+    setIsFilter({
       isfilter: true,
       filterValue: param,
-    }));
+    });
+  }, []);
+
+  const filterValuechangeOff = useCallback(() => {
+    setIsFilter({
+      isfilter: false,
+    });
   }, []);
 
   const { filterValue } = filter;
@@ -40,33 +45,24 @@ function MyContext({ children }) {
         delete e.residents;
         return e;
       });
+      console.log('isFilter:', filter.isfilter);
       if (filter.isfilter) {
         const a = results.filter((e) => e.name.includes(filterValue));
-        setApi((stateOld) => ({
-          ...stateOld,
+        console.log(a);
+        setApi({
           Api: a,
           isLoading: false,
-        }));
-      }
-      if (filterActivate) {
+        });
+      } else if (filterActivate) {
         let filtered = results;
         filterNumberActive.forEach((e) => {
           filtered = filterSelect(filtered, e.optionOne, e.optionTwo, e.number);
-          console.log(filtered);
         });
-        if (filtered.length) {
-          setApi((stateOld) => ({
-            ...stateOld,
-            Api: filtered,
-            isLoading: false,
-          }));
-        } else {
-          setApi((stateOld) => ({
-            ...stateOld,
-            Api: results,
-            isLoading: false,
-          }));
-        }
+        setApi((stateOld) => ({
+          ...stateOld,
+          Api: filtered,
+          isLoading: false,
+        }));
       } else {
         setApi((stateOld) => ({
           stateOld,
@@ -88,10 +84,17 @@ function MyContext({ children }) {
   const initialValue = useMemo(() => ({
     API,
     filterValuechange,
+    filterValuechangeOff,
     filterNumberActive,
     setFilterNumberActive,
     setFilterActivate,
-  }), [API, filterValuechange, setFilterNumberActive, filterNumberActive]);
+  }), [
+    API,
+    filterValuechange,
+    setFilterNumberActive,
+    filterNumberActive,
+    filterValuechangeOff,
+  ]);
 
   return (
     <Context.Provider value={ initialValue }>

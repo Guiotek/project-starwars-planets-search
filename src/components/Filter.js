@@ -5,6 +5,7 @@ function Filter() {
   const [valueNow, setValueNow] = useState({
     inputValue: '',
   });
+
   const [filterNumber, setFilterNumber] = useState({
     optionOne: 'population',
     optionTwo: 'maior que',
@@ -15,16 +16,21 @@ function Filter() {
     filterValuechange,
     setFilterNumberActive,
     setFilterActivate,
+    filterValuechangeOff,
   } = useContext(Context);
+
   const { inputValue } = valueNow;
 
   const searchOnChange = ({ target }) => {
-    console.log('Valor:', target);
     setValueNow((state) => ({
       ...state,
       inputValue: target.value,
     }));
-    filterValuechange(target.value);
+    if (target.value !== '') {
+      filterValuechange(target.value);
+    } else {
+      filterValuechangeOff();
+    }
   };
 
   const filterNumberChange = ({ target }) => {

@@ -3,6 +3,7 @@ import { Context } from '../context/MyContext';
 
 function Table() {
   const { API: { Api, isLoading } } = useContext(Context);
+  console.log('Table:', Api);
   return (
     <div>
       {isLoading ? <p>Carregando</p> : (
