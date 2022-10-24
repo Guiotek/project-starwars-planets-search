@@ -12,6 +12,14 @@ function Filter() {
     number: 0,
   });
 
+  const [optionDisabled, setOptionDisabled] = useState({
+    population: false,
+    orbital_period: false,
+    diameter: false,
+    rotation_period: false,
+    surface_water: false,
+  });
+
   const {
     filterValuechange,
     setFilterNumberActive,
@@ -52,7 +60,49 @@ function Filter() {
       },
     ]));
     setFilterActivate(true);
+    switch (filterNumber.optionOne) {
+    case 'population':
+      setOptionDisabled((s) => ({
+        ...s,
+        population: true,
+      }));
+      break;
+    case 'orbital_period':
+      setOptionDisabled((s) => ({
+        ...s,
+        orbitalPeriod: true,
+      }));
+      break;
+    case 'diameter':
+      setOptionDisabled((s) => ({
+        ...s,
+        diameter: true,
+      }));
+      break;
+    case 'rotation_period':
+      setOptionDisabled((s) => ({
+        ...s,
+        rotationPeriod: true,
+      }));
+      break;
+    case 'surface_water':
+      setOptionDisabled((s) => ({
+        ...s,
+        surfaceWater: true,
+      }));
+      break;
+    default:
+      return undefined;
+    }
   };
+
+  const {
+    population,
+    orbitalPeriod,
+    diameter,
+    rotationPeriod,
+    surfaceWater,
+  } = optionDisabled;
 
   return (
     <div>
@@ -74,11 +124,11 @@ function Filter() {
           data-testid="column-filter"
           onChange={ filterNumberChange }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {!population && <option value="population">population</option>}
+          {!orbitalPeriod && <option value="orbital_period">orbital_period</option>}
+          {!diameter && <option disabled={ diameter } value="diameter">diameter</option>}
+          {!rotationPeriod && <option value="rotation_period">rotation_period</option>}
+          {!surfaceWater && <option value="surface_water">surface_water</option>}
         </select>
       </label>
       <label htmlFor="filterLength">
