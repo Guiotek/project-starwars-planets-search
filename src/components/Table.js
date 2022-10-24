@@ -3,7 +3,7 @@ import { Context } from '../context/MyContext';
 
 function Table() {
   const { API: { Api, isLoading } } = useContext(Context);
-  console.log('Table:', Api);
+  console.log(Api);
   return (
     <div>
       {isLoading ? <p>Carregando</p> : (
@@ -28,7 +28,7 @@ function Table() {
           <tbody>
             {Api.map((e) => (
               <tr key={ Math.random() }>
-                <td>{e.name}</td>
+                <td data-testid="planet-name">{e.name}</td>
                 <td>{e.rotation_period}</td>
                 <td>{e.orbital_period}</td>
                 <td>{e.diameter}</td>
@@ -42,7 +42,7 @@ function Table() {
                 <td>{e.edited}</td>
                 <td>{e.url}</td>
               </tr>
-            )) }
+            ))}
           </tbody>
         </table>
       )}

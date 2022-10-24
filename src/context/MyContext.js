@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types';
 import fetchStarWars from '../services/fetchStarWars';
 import filterSelect from '../services/filterSelect';
+import sortFilter from '../services/sortFilter';
 
 export const Context = createContext({});
 
@@ -16,9 +17,6 @@ function MyContext({ children }) {
   });
 
   const [filterNumberActive, setFilterNumberActive] = useState([]);
-
-  console.log(filterNumberActive);
-
   const [filterActivate, setFilterActivate] = useState(false);
 
   const filterValuechange = useCallback((param) => {
@@ -34,6 +32,13 @@ function MyContext({ children }) {
     });
   }, []);
 
+  const [valueSort, setValueSort] = useState({
+    column: 'population',
+    sorte: 'ASC',
+    isSort: true,
+  });
+
+  const { isSort, column, sorte } = valueSort;
   const { filterValue } = filter;
 
   const { optionOne, optionTwo, number } = filterNumberActive;
@@ -41,14 +46,15 @@ function MyContext({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       const ApiRequest = await fetchStarWars();
-      const results = ApiRequest.map((e) => {
+      let results = ApiRequest.map((e) => {
         delete e.residents;
         return e;
       });
-      console.log('isFilter:', filter.isfilter);
+      if (!isSort) {
+        results = sortFilter(results, column, sorte);
+      }
       if (filter.isfilter) {
         const a = results.filter((e) => e.name.includes(filterValue));
-        console.log(a);
         setApi({
           Api: a,
           isLoading: false,
@@ -79,6 +85,9 @@ function MyContext({ children }) {
     optionTwo,
     number,
     filterActivate,
+    isSort,
+    column,
+    sorte,
   ]);
 
   const initialValue = useMemo(() => ({
@@ -88,12 +97,16 @@ function MyContext({ children }) {
     filterNumberActive,
     setFilterNumberActive,
     setFilterActivate,
+    valueSort,
+    setValueSort,
   }), [
     API,
     filterValuechange,
     setFilterNumberActive,
     filterNumberActive,
     filterValuechangeOff,
+    valueSort,
+    setValueSort,
   ]);
 
   return (

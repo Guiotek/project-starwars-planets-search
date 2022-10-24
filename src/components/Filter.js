@@ -25,6 +25,7 @@ function Filter() {
     setFilterNumberActive,
     setFilterActivate,
     filterValuechangeOff,
+    setValueSort,
   } = useContext(Context);
 
   const { inputValue } = valueNow;
@@ -47,6 +48,22 @@ function Filter() {
     setFilterNumber((state) => ({
       ...state,
       [name]: value,
+    }));
+  };
+
+  const sortOnChange = ({ target }) => {
+    const { name, value } = target;
+    setValueSort((s) => ({
+      ...s,
+      [name]: value,
+      isSort: true,
+    }));
+  };
+
+  const ClickSort = () => {
+    setValueSort((s) => ({
+      ...s,
+      isSort: false,
     }));
   };
 
@@ -159,6 +176,45 @@ function Filter() {
         onClick={ onClickFilter }
       >
         Adicionar filtro
+      </button>
+      <select
+        data-testid="column-sort"
+        name="column"
+        onChange={ sortOnChange }
+      >
+        <option value="population">population</option>
+        <option value="orbital_period">orbital_period</option>
+        <option value="diameter">diameter</option>
+        <option value="rotation_period">rotation_period</option>
+        <option value="surface_water">surface_water</option>
+      </select>
+      <label htmlFor="Asc">
+        <input
+          type="radio"
+          id="Asc"
+          value="ASC"
+          name="sorte"
+          onChange={ sortOnChange }
+          data-testid="column-sort-input-asc"
+        />
+        Ascendente
+        <input
+          type="radio"
+          id="Asc"
+          value="DESC"
+          name="sorte"
+          onChange={ sortOnChange }
+          data-testid="column-sort-input-desc"
+        />
+        Descendente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ ClickSort }
+      >
+        Ordenar
+
       </button>
     </div>
   );
