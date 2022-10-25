@@ -1,12 +1,18 @@
 import React from 'react';
 import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import App from '../App';
+import data from '../services/data';
 import userEvent from '@testing-library/user-event';
-import MyContext, { Context } from '../context/MyContext';
+
 
 
 describe('test App', () => {
   test('elements', () => {
+    global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve(data),
+    })
+  );
     render(<App />)
 
     const pesquisar =screen.getByRole('searchbox', {
@@ -19,15 +25,18 @@ describe('test App', () => {
       name: /adicionar filtro/i
     })
 
+    const select = screen.getByTestId('column-filter')
+
     expect(pesquisar).toBeInTheDocument();
     expect(number).toBeInTheDocument();
-    expect(number).toBeInTheDocument();
+    expect(select).toBeInTheDocument();
   })
 
   test('functions', async () => {
     render(<App />);
 
-    await waitForElementToBeRemoved(screen.getByTestId('loading'));
+    expect(global.fetch).toHaveBeenCalledTimes(1)
+    expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/planets')
 
     const element = screen.getByRole('cell', {
       name: /tatooine/i

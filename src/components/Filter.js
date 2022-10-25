@@ -12,6 +12,10 @@ function Filter() {
     number: 0,
   });
 
+  const { optionOne, optionTwo, number } = filterNumber;
+
+  console.log('FilterNumber:', optionOne, optionTwo, number);
+
   const [optionDisabled, setOptionDisabled] = useState({
     population: false,
     orbital_period: false,
@@ -111,6 +115,11 @@ function Filter() {
     default:
       return undefined;
     }
+    setFilterNumber({
+      optionOne: 'population',
+      optionTwo: 'maior que',
+      number: 0,
+    });
   };
 
   const {
@@ -143,7 +152,7 @@ function Filter() {
         >
           {!population && <option value="population">population</option>}
           {!orbitalPeriod && <option value="orbital_period">orbital_period</option>}
-          {!diameter && <option disabled={ diameter } value="diameter">diameter</option>}
+          {!diameter && <option value="diameter">diameter</option>}
           {!rotationPeriod && <option value="rotation_period">rotation_period</option>}
           {!surfaceWater && <option value="surface_water">surface_water</option>}
         </select>
