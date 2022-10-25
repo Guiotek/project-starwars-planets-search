@@ -1,18 +1,12 @@
 import React from 'react';
 import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import App from '../App';
-import data from '../services/data';
 import userEvent from '@testing-library/user-event';
 
 
 
 describe('test App', () => {
   test('elements', () => {
-    global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(data),
-    })
-  );
     render(<App />)
 
     const pesquisar =screen.getByRole('searchbox', {
@@ -34,9 +28,6 @@ describe('test App', () => {
 
   test('functions', async () => {
     render(<App />);
-
-    expect(global.fetch).toHaveBeenCalledTimes(1)
-    expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/planets')
 
     const element = screen.getByRole('cell', {
       name: /tatooine/i
