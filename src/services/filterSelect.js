@@ -1,11 +1,5 @@
 function filterSelect(results, optionOne, optionTwo, number) {
   let resultsFiltered = {};
-
-  console.log(optionTwo);
-  console.log(optionOne);
-  console.log(results);
-  console.log(number);
-
   switch (optionTwo) {
   case 'maior que':
     resultsFiltered = results.filter((e) => {
