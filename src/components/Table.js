@@ -6,7 +6,7 @@ function Table() {
   console.log(Api);
   return (
     <div>
-      {isLoading ? <p>Carregando</p> : (
+      {isLoading ? <p data-testid="loading">Carregando</p> : (
         <table>
           <thead>
             <tr>
