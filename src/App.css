@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
 .App {
   text-align: center;
 }
@@ -9,18 +11,23 @@
 
 body {
   background-image: url(/src/images/Star_Wars_Logo.svg);
-  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   color: white;
+  width: 100vh;
+  height: 100vh;
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
 .main {
-  background-color:rgba(0, 0, 0, 0.658) ;
-  
+  background-color:rgba(0, 0, 0, 0.712) ;
+  width: 100vh;
 }
-
-
 
 @media ( prefers-reduced-motion : no-preference ) {
 

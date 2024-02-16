@@ -5,9 +5,9 @@ function Table() {
   const { API: { Api, isLoading } } = useContext(Context);
   console.log(Api);
   return (
-    <div className="main">
+    <div>
       {isLoading ? <p data-testid="loading">Carregando</p> : (
-        <table>
+        <table className="main">
           <thead>
             <tr>
               <th>Name</th>
