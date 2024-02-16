@@ -7,6 +7,21 @@
   pointer-events: none;
 }
 
+body {
+  background-image: url(/src/images/Star_Wars_Logo.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: white;
+}
+
+.main {
+  background-color:rgba(0, 0, 0, 0.658) ;
+  
+}
+
+
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {

@@ -131,7 +131,7 @@ function Filter() {
   } = optionDisabled;
 
   return (
-    <div>
+    <div className="main">
       <label htmlFor="inputSearch">
         Pesquisar:
         <input
